@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SevaAI — India's Intelligent Social Impact Network</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #0A1628;
+      --navy-light: #112240;
+      --blue: #1A3A6B;
+      --saffron: #FF6B35;
+      --saffron-light: #FF8C5A;
+      --gold: #F4A832;
+      --teal: #0E9F8E;
+      --cream: #FBF7F0;
+      --white: #FFFFFF;
+      --gray: #8B9BB4;
+      --gray-light: #E8EDF6;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ─── NOISE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 5%;
+      backdrop-filter: blur(20px);
+      background: rgba(10,22,40,0.85);
+      border-bottom: 1px solid rgba(255,107,53,0.15);
+      transition: all 0.3s;
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--saffron); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--gray);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--saffron); }
+
+    .nav-cta {
+      background: var(--saffron);
+      color: var(--white) !important;
+      padding: 0.5rem 1.4rem;
+      border-radius: 100px;
+      font-weight: 600 !important;
+      transition: background 0.2s, transform 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--saffron-light) !important; transform: translateY(-1px); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding: 8rem 5% 5rem;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 50%, rgba(26,58,107,0.5) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(255,107,53,0.12) 0%, transparent 50%),
+        radial-gradient(ellipse 30% 30% at 80% 20%, rgba(14,159,142,0.1) 0%, transparent 50%);
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,107,53,0.1);
+      border: 1px solid rgba(255,107,53,0.3);
+      border-radius: 100px;
+      padding: 0.35rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--saffron);
+      margin-bottom: 2rem;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--saffron);
+      animation: pulse-dot 1.5s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%,100% { opacity:1; transform: scale(1); }
+      50% { opacity:0.5; transform: scale(1.5); }
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s 0.15s ease both;
+    }
+
+    .hero h1 .accent { color: var(--saffron); }
+    .hero h1 .accent-teal { color: var(--teal); }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--gray);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.45s ease both;
+    }
+
+    .btn-primary {
+      background: var(--saffron);
+      color: var(--white);
+      border: none;
+      padding: 0.9rem 2rem;
+      border-radius: 100px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.25s;
+      box-shadow: 0 8px 30px rgba(255,107,53,0.35);
+    }
+    .btn-primary:hover { background: var(--saffron-light); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(255,107,53,0.45); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.9rem 2rem;
+      border-radius: 100px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.25s;
+    }
+    .btn-ghost:hover { border-color: var(--saffron); color: var(--saffron); transform: translateY(-2px); }
+
+    .hero-visual {
+      position: absolute;
+      right: 5%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 460px;
+      height: 460px;
+      animation: fadeIn 1.2s 0.5s ease both;
+    }
+
+    .orb-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid;
+      animation: spin linear infinite;
+    }
+
+    .orb-ring:nth-child(1) {
+      width: 100%; height: 100%;
+      border-color: rgba(255,107,53,0.15);
+      animation-duration: 30s;
+    }
+    .orb-ring:nth-child(2) {
+      width: 78%; height: 78%;
+      top: 11%; left: 11%;
+      border-color: rgba(14,159,142,0.2);
+      animation-duration: 20s;
+      animation-direction: reverse;
+    }
+    .orb-ring:nth-child(3) {
+      width: 56%; height: 56%;
+      top: 22%; left: 22%;
+      border-color: rgba(255,107,53,0.25);
+      animation-duration: 15s;
+    }
+
+    .orb-center {
+      position: absolute;
+      width: 38%; height: 38%;
+      top: 31%; left: 31%;
+      background: radial-gradient(circle, rgba(255,107,53,0.4) 0%, rgba(26,58,107,0.6) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.6rem;
+      box-shadow: 0 0 60px rgba(255,107,53,0.3);
+    }
+    .orb-center span { color: var(--saffron); }
+
+    .orb-dot {
+      position: absolute;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--saffron);
+      top: 50%; left: 50%;
+      transform-origin: 230px 0;
+    }
+    .orb-dot:nth-child(5) { background: var(--teal); transform-origin: 180px 0; animation: orbit1 8s linear infinite; }
+    .orb-dot:nth-child(6) { background: var(--gold); transform-origin: 130px 0; animation: orbit2 12s linear infinite; }
+    .orb-dot:nth-child(7) { background: var(--saffron); transform-origin: 210px 0; animation: orbit3 6s linear infinite; }
+
+    .orb-node {
+      position: absolute;
+      padding: 0.4rem 0.8rem;
+      background: rgba(10,22,40,0.9);
+      border: 1px solid rgba(255,107,53,0.3);
+      border-radius: 8px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      white-space: nowrap;
+      color: var(--saffron);
+    }
+    .orb-node.n1 { top: 8%; left: 50%; transform: translateX(-50%); }
+    .orb-node.n2 { top: 50%; right: 0; transform: translateY(-50%); }
+    .orb-node.n3 { bottom: 8%; left: 50%; transform: translateX(-50%); }
+    .orb-node.n4 { top: 50%; left: 0; transform: translateY(-50%); }
+    .orb-node.teal { color: var(--teal); border-color: rgba(14,159,142,0.3); }
+    .orb-node.gold { color: var(--gold); border-color: rgba(244,168,50,0.3); }
+
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes orbit1 { from { transform: rotate(0deg) translateX(180px) rotate(0deg); } to { transform: rotate(360deg) translateX(180px) rotate(-360deg); } }
+    @keyframes orbit2 { from { transform: rotate(120deg) translateX(130px) rotate(-120deg); } to { transform: rotate(480deg) translateX(130px) rotate(-480deg); } }
+    @keyframes orbit3 { from { transform: rotate(240deg) translateX(210px) rotate(-240deg); } to { transform: rotate(600deg) translateX(210px) rotate(-600deg); } }
+
+    @keyframes fadeUp { from { opacity:0; transform: translateY(30px); } to { opacity:1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+    /* ─── STATS STRIP ─── */
+    .stats-strip {
+      background: var(--navy-light);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 2.5rem 5%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 1rem 2rem;
+      border-right: 1px solid rgba(255,255,255,0.06);
+    }
+    .stat-item:last-child { border-right: none; }
+
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--saffron);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ─── SECTIONS ─── */
+    section {
+      padding: 7rem 5%;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--saffron);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .section-label::before {
+      content: '';
+      width: 24px; height: 2px;
+      background: var(--saffron);
+      border-radius: 2px;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1.2rem;
+    }
+
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--gray);
+      line-height: 1.7;
+      max-width: 560px;
+      font-weight: 300;
+    }
+
+    /* ─── PROBLEMS SECTION ─── */
+    .problems {
+      background: var(--navy-light);
+    }
+
+    .problems-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 4rem;
+    }
+
+    .problem-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .problem-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--saffron), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+    .problem-card:hover::before { transform: scaleX(1); }
+    .problem-card:hover {
+      background: rgba(255,107,53,0.05);
+      border-color: rgba(255,107,53,0.2);
+      transform: translateY(-4px);
+    }
+
+    .problem-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .problem-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.7rem;
+    }
+    .problem-card p {
+      font-size: 0.88rem;
+      color: var(--gray);
+      line-height: 1.65;
+    }
+
+    /* ─── SEVA FRAMEWORK ─── */
+    .seva {
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .seva::before {
+      content: 'SEVA';
+      position: absolute;
+      font-family: 'Syne', sans-serif;
+      font-size: 20vw;
+      font-weight: 900;
+      color: rgba(255,255,255,0.015);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      letter-spacing: -0.05em;
+    }
+
+    .seva-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: end;
+      margin-bottom: 4rem;
+    }
+
+    .seva-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .seva-step {
+      position: relative;
+    }
+
+    .seva-step-letter {
+      font-family: 'Syne', sans-serif;
+      font-size: 4rem;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--saffron), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .seva-step:nth-child(2) .seva-step-letter { background: linear-gradient(135deg, #1A8FFF, var(--teal)); -webkit-background-clip: text; background-clip: text; }
+    .seva-step:nth-child(3) .seva-step-letter { background: linear-gradient(135deg, var(--teal), #0ED4BE); -webkit-background-clip: text; background-clip: text; }
+    .seva-step:nth-child(4) .seva-step-letter { background: linear-gradient(135deg, var(--gold), var(--saffron)); -webkit-background-clip: text; background-clip: text; }
+
+    .seva-step-word {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--white);
+    }
+    .seva-step p {
+      font-size: 0.85rem;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    .seva-connector {
+      position: absolute;
+      top: 2.5rem;
+      right: -0.75rem;
+      width: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,107,53,0.4);
+      font-size: 1.2rem;
+    }
+
+    /* ─── FEATURES ─── */
+    .features {
+      background: var(--navy-light);
+    }
+
+    .features-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      margin-top: 4rem;
+    }
+
+    .features-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 1.2rem;
+      padding: 1.5rem;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.02);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .feature-item:hover, .feature-item.active {
+      background: rgba(255,107,53,0.06);
+      border-color: rgba(255,107,53,0.25);
+    }
+
+    .feature-icon-wrap {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      background: rgba(255,107,53,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .feature-item:nth-child(2) .feature-icon-wrap { background: rgba(14,159,142,0.15); }
+    .feature-item:nth-child(3) .feature-icon-wrap { background: rgba(244,168,50,0.15); }
+    .feature-item:nth-child(4) .feature-icon-wrap { background: rgba(26,143,255,0.15); }
+
+    .feature-text h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+    .feature-text p {
+      font-size: 0.85rem;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    .features-visual {
+      position: relative;
+    }
+
+    .phone-mock {
+      background: var(--navy-light);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 32px;
+      padding: 1.5rem;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    .phone-screen-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.2rem;
+    }
+    .phone-screen-header span {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .phone-screen-header span em { color: var(--saffron); font-style: normal; }
+
+    .alert-card {
+      background: linear-gradient(135deg, rgba(255,107,53,0.15), rgba(255,107,53,0.05));
+      border: 1px solid rgba(255,107,53,0.3);
+      border-radius: 14px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      gap: 0.8rem;
+      align-items: flex-start;
+    }
+    .alert-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--saffron);
+      flex-shrink: 0;
+      margin-top: 4px;
+      animation: pulse-dot 1.5s infinite;
+    }
+    .alert-card h5 {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--saffron);
+      margin-bottom: 0.2rem;
+    }
+    .alert-card p { font-size: 0.75rem; color: var(--gray); }
+
+    .task-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px;
+      padding: 1rem;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .task-emoji { font-size: 1.4rem; }
+    .task-card h5 { font-size: 0.82rem; font-weight: 600; margin-bottom: 0.15rem; }
+    .task-card p { font-size: 0.72rem; color: var(--gray); }
+    .task-badge {
+      margin-left: auto;
+      font-size: 0.65rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+      background: rgba(14,159,142,0.2);
+      color: var(--teal);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .task-badge.urgent { background: rgba(255,107,53,0.2); color: var(--saffron); }
+
+    /* ─── CASE STUDIES ─── */
+    .cases {
+      background: var(--navy);
+    }
+
+    .cases-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+
+    .case-card {
+      border-radius: 20px;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.07);
+      transition: transform 0.3s;
+    }
+    .case-card:hover { transform: translateY(-6px); }
+
+    .case-card.flood { background: linear-gradient(135deg, rgba(26,58,107,0.8), rgba(14,159,142,0.2)); }
+    .case-card.animal { background: linear-gradient(135deg, rgba(255,107,53,0.15), rgba(26,58,107,0.6)); }
+    .case-card.food { background: linear-gradient(135deg, rgba(244,168,50,0.15), rgba(26,58,107,0.6)); }
+    .case-card.blood { background: linear-gradient(135deg, rgba(220,50,50,0.15), rgba(26,58,107,0.6)); }
+
+    .case-icon { font-size: 2.5rem; margin-bottom: 1.2rem; }
+    .case-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.7rem;
+    }
+    .case-card p {
+      font-size: 0.88rem;
+      color: var(--gray);
+      line-height: 1.65;
+      margin-bottom: 1.2rem;
+    }
+    .case-outcome {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--teal);
+      background: rgba(14,159,142,0.12);
+      border: 1px solid rgba(14,159,142,0.25);
+      padding: 0.35rem 0.8rem;
+      border-radius: 100px;
+    }
+
+    /* ─── SDG ALIGNMENT ─── */
+    .sdgs {
+      background: var(--navy-light);
+    }
+
+    .sdg-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.5rem;
+      margin-top: 4rem;
+    }
+
+    .sdg-card {
+      text-align: center;
+      padding: 2rem 1rem;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.07);
+      background: rgba(255,255,255,0.03);
+      transition: all 0.3s;
+    }
+    .sdg-card:hover {
+      background: rgba(255,107,53,0.07);
+      border-color: rgba(255,107,53,0.2);
+      transform: translateY(-4px);
+    }
+    .sdg-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--saffron);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .sdg-card h4 { font-size: 0.82rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .sdg-card p { font-size: 0.75rem; color: var(--gray); line-height: 1.5; }
+
+    /* ─── USER TYPES ─── */
+    .users {
+      background: var(--navy);
+    }
+
+    .users-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 3rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 0.55rem 1.2rem;
+      border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: transparent;
+      color: var(--gray);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--saffron);
+      color: var(--white);
+      border-color: var(--saffron);
+    }
+
+    .user-panel {
+      display: none;
+      grid-template-columns: 300px 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    .user-panel.active { display: grid; }
+
+    .user-avatar {
+      background: linear-gradient(135deg, var(--blue), rgba(255,107,53,0.2));
+      border: 1px solid rgba(255,107,53,0.2);
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+    }
+    .avatar-emoji { font-size: 3.5rem; margin-bottom: 1rem; }
+    .user-avatar h3 { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .user-avatar .user-role { font-size: 0.8rem; color: var(--saffron); font-weight: 600; margin-bottom: 0.4rem; }
+    .user-avatar .user-loc { font-size: 0.78rem; color: var(--gray); }
+
+    .user-details h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .user-goals, .user-pain {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .user-goals h5, .user-pain h5 {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      margin-bottom: 0.3rem;
+    }
+    .tag-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tag {
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+    .tag.green { background: rgba(14,159,142,0.15); color: var(--teal); border: 1px solid rgba(14,159,142,0.25); }
+    .tag.red { background: rgba(220,50,50,0.12); color: #FF7070; border: 1px solid rgba(220,50,50,0.2); }
+
+    /* ─── REVENUE MODEL ─── */
+    .revenue {
+      background: var(--navy-light);
+    }
+
+    .revenue-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 4rem;
+    }
+
+    .rev-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.3s;
+    }
+    .rev-card:hover { background: rgba(255,107,53,0.06); border-color: rgba(255,107,53,0.2); transform: translateY(-4px); }
+
+    .rev-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .rev-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .rev-card p { font-size: 0.85rem; color: var(--gray); line-height: 1.65; }
+    .rev-tag {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--saffron);
+    }
+
+    /* ─── ROADMAP ─── */
+    .roadmap {
+      background: var(--navy);
+      overflow: hidden;
+    }
+
+    .roadmap-track {
+      position: relative;
+      margin-top: 4rem;
+    }
+    .roadmap-line {
+      position: absolute;
+      top: 28px;
+      left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--saffron), var(--teal), var(--gold), var(--blue));
+    }
+    .roadmap-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      position: relative;
+    }
+    .roadmap-step {
+      padding-top: 60px;
+      position: relative;
+    }
+    .roadmap-dot {
+      position: absolute;
+      top: 18px; left: 0;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--saffron);
+      border: 3px solid var(--navy);
+      box-shadow: 0 0 0 2px var(--saffron);
+    }
+    .roadmap-step:nth-child(2) .roadmap-dot { background: var(--teal); box-shadow: 0 0 0 2px var(--teal); }
+    .roadmap-step:nth-child(3) .roadmap-dot { background: var(--gold); box-shadow: 0 0 0 2px var(--gold); }
+    .roadmap-step:nth-child(4) .roadmap-dot { background: #1A8FFF; box-shadow: 0 0 0 2px #1A8FFF; }
+
+    .roadmap-phase {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--saffron);
+      margin-bottom: 0.4rem;
+    }
+    .roadmap-step:nth-child(2) .roadmap-phase { color: var(--teal); }
+    .roadmap-step:nth-child(3) .roadmap-phase { color: var(--gold); }
+    .roadmap-step:nth-child(4) .roadmap-phase { color: #1A8FFF; }
+
+    .roadmap-step h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .roadmap-step ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .roadmap-step li {
+      font-size: 0.82rem;
+      color: var(--gray);
+      padding-left: 1rem;
+      position: relative;
+    }
+    .roadmap-step li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: rgba(255,107,53,0.5);
+      font-size: 0.75rem;
+    }
+
+    /* ─── CTA ─── */
+    .cta-section {
+      background: var(--navy-light);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,107,53,0.12) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .cta-section > * { position: relative; z-index: 2; }
+    .cta-section .section-title { max-width: 700px; margin: 0 auto 1rem; }
+    .cta-section .section-sub { margin: 0 auto 2.5rem; }
+    .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: rgba(0,0,0,0.4);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 4rem 5% 2rem;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 4rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-brand .nav-logo {
+      display: block;
+      margin-bottom: 0.8rem;
+      text-decoration: none;
+    }
+    .footer-brand p {
+      font-size: 0.85rem;
+      color: var(--gray);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 0.8rem;
+    }
+    .social-link {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      text-decoration: none;
+      color: var(--gray);
+      transition: all 0.2s;
+    }
+    .social-link:hover { border-color: var(--saffron); color: var(--saffron); background: rgba(255,107,53,0.1); }
+
+    .footer-col h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      margin-bottom: 1.2rem;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-col a {
+      text-decoration: none;
+      color: var(--gray);
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--saffron); }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-bottom p { font-size: 0.8rem; color: var(--gray); }
+    .footer-bottom .built-by { font-size: 0.8rem; color: var(--gray); }
+    .footer-bottom .built-by a { color: var(--saffron); text-decoration: none; font-weight: 600; }
+    .footer-bottom .built-by a:hover { text-decoration: underline; }
+
+    /* ─── SCROLL ANIMATIONS ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1100px) {
+      .hero-visual { display: none; }
+      .problems-grid { grid-template-columns: repeat(2, 1fr); }
+      .sdg-grid { grid-template-columns: repeat(3, 1fr); }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .stats-strip { grid-template-columns: repeat(2, 1fr); }
+      .seva-steps { grid-template-columns: repeat(2, 1fr); }
+      .features-layout { grid-template-columns: 1fr; }
+      .cases-grid { grid-template-columns: 1fr; }
+      .revenue-grid { grid-template-columns: 1fr; }
+      .roadmap-steps { grid-template-columns: repeat(2, 1fr); }
+      .roadmap-line { display: none; }
+      .user-panel.active { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .sdg-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Seva<span>AI</span>™</div>
+    <ul class="nav-links">
+      <li><a href="#problems">Problems</a></li>
+      <li><a href="#seva">Framework</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#cases">Cases</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#contact" class="nav-cta">Get Involved</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">🇮🇳 India's Intelligent Social Impact Network</div>
+      <h1>From <span class="accent">Problems</span><br>to <span class="accent-teal">Impact</span><br>in Minutes</h1>
+      <p class="hero-sub">SevaAI connects citizens, volunteers, NGOs, government agencies, and corporate CSR teams to urgent needs in real-time — powered by advanced AI and driven by compassion.</p>
+      <div class="hero-actions">
+        <a href="#features" class="btn-primary">Explore the Platform →</a>
+        <a href="#cases" class="btn-ghost">See Case Studies</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="orb-ring"></div>
+      <div class="orb-ring"></div>
+      <div class="orb-ring"></div>
+      <div class="orb-center">Seva<span>AI</span></div>
+      <div class="orb-dot"></div>
+      <div class="orb-dot"></div>
+      <div class="orb-dot"></div>
+      <div class="orb-node n1">🏥 Blood Needed</div>
+      <div class="orb-node n2 teal">🐕 Rescue Alert</div>
+      <div class="orb-node n3 gold">🍱 Food Surplus</div>
+      <div class="orb-node n4">🌊 Flood Relief</div>
+    </div>
+  </section>
+
+  <!-- STATS STRIP -->
+  <div class="stats-strip">
+    <div class="stat-item reveal">
+      <div class="stat-num">1M+</div>
+      <div class="stat-label">Resolved Cases (Y1 Target)</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <div class="stat-num">5M+</div>
+      <div class="stat-label">Lives Impacted</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <div class="stat-num">100K+</div>
+      <div class="stat-label">Active Volunteers</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <div class="stat-num">₹25L Cr</div>
+      <div class="stat-label">Total Social Sector Market</div>
+    </div>
+  </div>
+
+  <!-- PROBLEMS -->
+  <section class="problems" id="problems">
+    <div class="section-label">The Challenge</div>
+    <h2 class="section-title reveal">India's Social Sector<br>Is <em style="font-style:normal;color:var(--saffron)">Fragmented</em></h2>
+    <p class="section-sub reveal reveal-delay-1">Despite immense dedication from countless individuals and organizations, critical inefficiencies hold India back from its full social impact potential.</p>
+
+    <div class="problems-grid">
+      <div class="problem-card reveal reveal-delay-1">
+        <div class="problem-icon">🤝</div>
+        <h3>Volunteer Coordination Gaps</h3>
+        <p>Willing volunteers can't find urgent needs in real time. Delayed responses and underutilized human capital persist across every state.</p>
+      </div>
+      <div class="problem-card reveal reveal-delay-2">
+        <div class="problem-icon">🔍</div>
+        <h3>NGO Discovery Issues</h3>
+        <p>With thousands of NGOs operating in silos, finding the right organization for a specific cause or geography is a constant challenge.</p>
+      </div>
+      <div class="problem-card reveal reveal-delay-3">
+        <div class="problem-icon">🌊</div>
+        <h3>Disaster Response Delays</h3>
+        <p>India faces frequent natural disasters, but slow information flow and uncoordinated relief efforts lead to avoidable suffering.</p>
+      </div>
+      <div class="problem-card reveal reveal-delay-1">
+        <div class="problem-icon">🐾</div>
+        <h3>Animal Rescue Coordination</h3>
+        <p>Animal welfare rescues are ad-hoc and disconnected. Finding veterinary assistance or shelter in time remains a significant challenge.</p>
+      </div>
+      <div class="problem-card reveal reveal-delay-2">
+        <div class="problem-icon">🍱</div>
+        <h3>Food Waste vs. Hunger</h3>
+        <p>India wastes enormous quantities of food daily while millions go hungry — due to inefficient matching and redistribution logistics.</p>
+      </div>
+      <div class="problem-card reveal reveal-delay-3">
+        <div class="problem-icon">🩸</div>
+        <h3>Blood Donation Shortages</h3>
+        <p>Especially for rare blood types, critical shortages highlight the gap in real-time donor mobilization and demand-supply matching.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEVA FRAMEWORK -->
+  <section class="seva" id="seva">
+    <div class="seva-header">
+      <div>
+        <div class="section-label">Proprietary Framework</div>
+        <h2 class="section-title reveal">The S.E.V.A.<br>Framework™</h2>
+      </div>
+      <p class="section-sub reveal reveal-delay-1">Our systematic approach ensures every intervention — from initial detection to final impact measurement — is efficient, verifiable, and transparent.</p>
+    </div>
+
+    <div class="seva-steps">
+      <div class="seva-step reveal reveal-delay-1">
+        <div class="seva-step-letter">S</div>
+        <div class="seva-step-word">Spot</div>
+        <p>AI Need Detection Engine proactively identifies urgent social needs from social media, news, citizen reports, and IoT data streams.</p>
+        <div class="seva-connector">→</div>
+      </div>
+      <div class="seva-step reveal reveal-delay-2">
+        <div class="seva-step-letter">E</div>
+        <div class="seva-step-word">Evaluate</div>
+        <p>Analyzes detected needs to determine severity, required resources, and the optimal response strategy — before a single volunteer moves.</p>
+        <div class="seva-connector">→</div>
+      </div>
+      <div class="seva-step reveal reveal-delay-3">
+        <div class="seva-step-letter">V</div>
+        <div class="seva-step-word">Verify</div>
+        <p>Multi-layered authentication combining AI anomaly detection, community verification, and human oversight for high-stakes cases.</p>
+        <div class="seva-connector">→</div>
+      </div>
+      <div class="seva-step reveal reveal-delay-4">
+        <div class="seva-step-letter">A</div>
+        <div class="seva-step-word">Act</div>
+        <p>Coordinated deployment of NGOs, volunteers, and resources with real-time navigation, communication, and progress tracking.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="section-label">Platform Capabilities</div>
+    <h2 class="section-title reveal">Built for Real-Time<br>Social Impact</h2>
+
+    <div class="features-layout">
+      <div class="features-list">
+        <div class="feature-item reveal reveal-delay-1">
+          <div class="feature-icon-wrap">🤖</div>
+          <div class="feature-text">
+            <h4>AI-Powered Need Detection</h4>
+            <p>NLP, Computer Vision, and Geospatial AI continuously scan data streams to spot crises before they escalate — from flood zones to food shortages.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal reveal-delay-2">
+          <div class="feature-icon-wrap">📍</div>
+          <div class="feature-text">
+            <h4>Smart Volunteer Routing</h4>
+            <p>Matches volunteers based on skill, proximity, availability, and transport — then dispatches real-time navigation to get them to the right place, fast.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal reveal-delay-3">
+          <div class="feature-icon-wrap">🏆</div>
+          <div class="feature-text">
+            <h4>NGO Matching Engine</h4>
+            <p>Intelligently connects urgent needs to the best-fit organizations using recommendation systems and Graph Neural Networks for optimal outcomes.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal reveal-delay-4">
+          <div class="feature-icon-wrap">📊</div>
+          <div class="feature-text">
+            <h4>Impact Intelligence Engine</h4>
+            <p>Causal inference and predictive modeling turn raw activity data into transparent, auditable impact metrics for every stakeholder on the platform.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="features-visual reveal reveal-delay-2">
+        <div class="phone-mock">
+          <div class="phone-screen-header">
+            <span>Seva<em>AI</em></span>
+            <span style="font-size:0.75rem;color:var(--gray)">Live Feed</span>
+          </div>
+
+          <div class="alert-card">
+            <div class="alert-dot"></div>
+            <div>
+              <h5>🚨 Urgent: Flood Relief Needed</h5>
+              <p>Assam, Dhubri District — 3 NGOs alerted, 12 volunteers routing</p>
+            </div>
+          </div>
+
+          <div class="task-card">
+            <div class="task-emoji">🐕</div>
+            <div>
+              <h5>Animal Rescue — South Delhi</h5>
+              <p>Injured stray, vet coordination active</p>
+            </div>
+            <div class="task-badge urgent">Urgent</div>
+          </div>
+
+          <div class="task-card">
+            <div class="task-emoji">🍱</div>
+            <div>
+              <h5>Food Redistribution — Bengaluru</h5>
+              <p>500 meals surplus, 3 pick-ups matched</p>
+            </div>
+            <div class="task-badge">Active</div>
+          </div>
+
+          <div class="task-card">
+            <div class="task-emoji">🩸</div>
+            <div>
+              <h5>O-Neg Blood Needed — Chennai</h5>
+              <p>8 donors alerted, 3 confirmed</p>
+            </div>
+            <div class="task-badge">In Progress</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASE STUDIES -->
+  <section class="cases" id="cases">
+    <div class="section-label">Real-World Impact</div>
+    <h2 class="section-title reveal">SevaAI in Action:<br>Four Critical Scenarios</h2>
+    <p class="section-sub reveal reveal-delay-1">See how the S.E.V.A. Framework™ transforms fragmented, reactive responses into coordinated, data-driven action.</p>
+
+    <div class="cases-grid">
+      <div class="case-card flood reveal reveal-delay-1">
+        <div class="case-icon">🌊</div>
+        <h3>Flood Relief in Assam</h3>
+        <p>Heavy monsoon rains displace thousands across rural Assam. SevaAI's AI engine detects the crisis from satellite data, social media, and citizen reports within minutes — dispatching SDRF teams, NGOs, and volunteers simultaneously with real-time navigation.</p>
+        <div class="case-outcome">✓ 25% reduction in response casualties</div>
+      </div>
+      <div class="case-card animal reveal reveal-delay-2">
+        <div class="case-icon">🐾</div>
+        <h3>Animal Rescue in Urban Delhi</h3>
+        <p>A citizen photographs an injured stray and reports via the app. The AI immediately categorizes the need, alerts the nearest animal welfare NGO, dispatches a volunteer with a vehicle, and locates the closest partnered veterinary clinic — all within 8 minutes.</p>
+        <div class="case-outcome">✓ 1M animals rescued annually (target)</div>
+      </div>
+      <div class="case-card food reveal reveal-delay-3">
+        <div class="case-icon">🍱</div>
+        <h3>Food Redistribution in Bengaluru</h3>
+        <p>A hotel with 500 surplus meals connects to SevaAI. The platform matches it with a food-insecure community nearby, coordinates NGO pickup, dispatches volunteers with transport, and tracks every kilogram diverted from landfill to plate in real time.</p>
+        <div class="case-outcome">✓ 500+ tons food saved (Year 1 target)</div>
+      </div>
+      <div class="case-card blood reveal reveal-delay-4">
+        <div class="case-icon">🩸</div>
+        <h3>Blood Donation Emergency in Chennai</h3>
+        <p>A hospital flags a critical O-negative shortage. SevaAI instantly filters eligible donors by blood type, location, and donation eligibility, sends push notifications, and provides navigation — converting a slow manual process into a life-saving sprint.</p>
+        <div class="case-outcome">✓ 50,000+ blood units mobilized (Year 1)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- USER TYPES -->
+  <section class="users" id="users">
+    <div class="section-label">Who It Serves</div>
+    <h2 class="section-title reveal">Designed for Every<br>Stakeholder</h2>
+
+    <div class="users-tabs">
+      <button class="tab-btn active" onclick="switchTab('priya')">🎓 Volunteer</button>
+      <button class="tab-btn" onclick="switchTab('rajesh')">🏢 NGO Manager</button>
+      <button class="tab-btn" onclick="switchTab('anjali')">🐾 Activist</button>
+      <button class="tab-btn" onclick="switchTab('rohan')">⚡ Relief Coordinator</button>
+      <button class="tab-btn" onclick="switchTab('tanya')">💼 CSR Manager</button>
+    </div>
+
+    <div class="user-panel active" id="tab-priya">
+      <div class="user-avatar">
+        <div class="avatar-emoji">👩‍💻</div>
+        <h3>Priya Sharma</h3>
+        <div class="user-role">Engineering Student</div>
+        <div class="user-loc">📍 Bengaluru, India · Age 20</div>
+      </div>
+      <div class="user-details">
+        <h4>"The Enthusiastic Helper"</h4>
+        <div class="user-goals">
+          <h5>Goals</h5>
+          <div class="tag-list">
+            <span class="tag green">Meaningful contribution</span>
+            <span class="tag green">Skill development</span>
+            <span class="tag green">Local community impact</span>
+            <span class="tag green">College CSR requirements</span>
+          </div>
+        </div>
+        <div class="user-pain">
+          <h5>Pain Points</h5>
+          <div class="tag-list">
+            <span class="tag red">Hard to find legitimate opportunities</span>
+            <span class="tag red">Poor NGO communication</span>
+            <span class="tag red">Unclear impact visibility</span>
+          </div>
+        </div>
+        <p style="font-size:0.88rem;color:var(--gray);line-height:1.7">SevaAI gives Priya real-time notifications for verified tasks near her campus, a personal impact dashboard showing her hours and lives touched, and a safe, coordinated volunteering environment that fits her schedule.</p>
+      </div>
+    </div>
+
+    <div class="user-panel" id="tab-rajesh">
+      <div class="user-avatar">
+        <div class="avatar-emoji">👨‍💼</div>
+        <h3>Rajesh Kumar</h3>
+        <div class="user-role">Program Manager, Hope for All NGO</div>
+        <div class="user-loc">📍 Mumbai, India · Age 45</div>
+      </div>
+      <div class="user-details">
+        <h4>"The Dedicated Coordinator"</h4>
+        <div class="user-goals">
+          <h5>Goals</h5>
+          <div class="tag-list">
+            <span class="tag green">Efficient volunteer mobilization</span>
+            <span class="tag green">Real-time food shortage alerts</span>
+            <span class="tag green">Donor transparency & reporting</span>
+          </div>
+        </div>
+        <div class="user-pain">
+          <h5>Pain Points</h5>
+          <div class="tag-list">
+            <span class="tag red">Manual scheduling bottlenecks</span>
+            <span class="tag red">Can't identify shortages in real time</span>
+            <span class="tag red">Struggles to demonstrate impact</span>
+          </div>
+        </div>
+        <p style="font-size:0.88rem;color:var(--gray);line-height:1.7">SevaAI automates Rajesh's volunteer dispatch, surfaces food surplus and shortage zones via AI, and generates comprehensive impact reports that help secure grants and partnerships.</p>
+      </div>
+    </div>
+
+    <div class="user-panel" id="tab-anjali">
+      <div class="user-avatar">
+        <div class="avatar-emoji">🐾</div>
+        <h3>Anjali Singh</h3>
+        <div class="user-role">Full-time Animal Rescuer</div>
+        <div class="user-loc">📍 Delhi, India · Age 32</div>
+      </div>
+      <div class="user-details">
+        <h4>"The Compassionate Rescuer"</h4>
+        <div class="user-goals">
+          <h5>Goals</h5>
+          <div class="tag-list">
+            <span class="tag green">Faster rescue alerts</span>
+            <span class="tag green">Vet & shelter network access</span>
+            <span class="tag green">Multi-person rescue coordination</span>
+          </div>
+        </div>
+        <div class="user-pain">
+          <h5>Pain Points</h5>
+          <div class="tag-list">
+            <span class="tag red">Delayed distress reports</span>
+            <span class="tag red">No connected vet/shelter network</span>
+            <span class="tag red">Emotional burnout from isolation</span>
+          </div>
+        </div>
+        <p style="font-size:0.88rem;color:var(--gray);line-height:1.7">SevaAI gives Anjali real-time alerts with precise location data, a network of verified vets and foster families, and tools to coordinate multi-volunteer rescues efficiently.</p>
+      </div>
+    </div>
+
+    <div class="user-panel" id="tab-rohan">
+      <div class="user-avatar">
+        <div class="avatar-emoji">⚡</div>
+        <h3>Capt. Rohan Mehta</h3>
+        <div class="user-role">Disaster Response Unit Head</div>
+        <div class="user-loc">📍 Uttarakhand, India · Age 55</div>
+      </div>
+      <div class="user-details">
+        <h4>"The Crisis Commander"</h4>
+        <div class="user-goals">
+          <h5>Goals</h5>
+          <div class="tag-list">
+            <span class="tag green">Minimize casualties & property loss</span>
+            <span class="tag green">Rapid coordinated deployment</span>
+            <span class="tag green">Real-time field data</span>
+          </div>
+        </div>
+        <div class="user-pain">
+          <h5>Pain Points</h5>
+          <div class="tag-list">
+            <span class="tag red">Information delays from affected areas</span>
+            <span class="tag red">Coordination breakdowns mid-crisis</span>
+            <span class="tag red">Resource allocation blind spots</span>
+          </div>
+        </div>
+        <p style="font-size:0.88rem;color:var(--gray);line-height:1.7">SevaAI gives Rohan a centralized crisis dashboard, predictive analytics for early warnings, seamless inter-agency communication, and real-time resource tracking across all responders.</p>
+      </div>
+    </div>
+
+    <div class="user-panel" id="tab-tanya">
+      <div class="user-avatar">
+        <div class="avatar-emoji">💼</div>
+        <h3>Tanya Gupta</h3>
+        <div class="user-role">CSR Head, Tech Solutions India</div>
+        <div class="user-loc">📍 Gurugram, India · Age 38</div>
+      </div>
+      <div class="user-details">
+        <h4>"The Strategic Philanthropist"</h4>
+        <div class="user-goals">
+          <h5>Goals</h5>
+          <div class="tag-list">
+            <span class="tag green">Verified NGO discovery</span>
+            <span class="tag green">Employee volunteering programs</span>
+            <span class="tag green">Measurable SROI reporting</span>
+          </div>
+        </div>
+        <div class="user-pain">
+          <h5>Pain Points</h5>
+          <div class="tag-list">
+            <span class="tag red">Time-consuming NGO due diligence</span>
+            <span class="tag red">No clear CSR impact metrics</span>
+            <span class="tag red">Difficulty engaging diverse employees</span>
+          </div>
+        </div>
+        <p style="font-size:0.88rem;color:var(--gray);line-height:1.7">SevaAI provides Tanya a curated, verified NGO marketplace, employee volunteering coordination tools, and customized SROI dashboards aligned to India's CSR compliance frameworks.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SDGs -->
+  <section class="sdgs" id="sdgs">
+    <div class="section-label">UN Alignment</div>
+    <h2 class="section-title reveal">Contributing to<br>Global Development Goals</h2>
+
+    <div class="sdg-grid">
+      <div class="sdg-card reveal reveal-delay-1">
+        <div class="sdg-num">SDG 2</div>
+        <h4>Zero Hunger</h4>
+        <p>Food waste redistribution networks eliminate the gap between surplus and need.</p>
+      </div>
+      <div class="sdg-card reveal reveal-delay-2">
+        <div class="sdg-num">SDG 3</div>
+        <h4>Good Health</h4>
+        <p>Blood donation matching and emergency health response save lives daily.</p>
+      </div>
+      <div class="sdg-card reveal reveal-delay-3">
+        <div class="sdg-num">SDG 11</div>
+        <h4>Sustainable Cities</h4>
+        <p>Resilient communities and efficient urban crisis management through AI coordination.</p>
+      </div>
+      <div class="sdg-card reveal reveal-delay-4">
+        <div class="sdg-num">SDG 13</div>
+        <h4>Climate Action</h4>
+        <p>Disaster preparedness and response efforts aligned with climate resilience goals.</p>
+      </div>
+      <div class="sdg-card reveal reveal-delay-5">
+        <div class="sdg-num">SDG 17</div>
+        <h4>Partnerships</h4>
+        <p>Uniting citizens, NGOs, government, and corporations for collective action at scale.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVENUE MODEL -->
+  <section class="revenue" id="revenue">
+    <div class="section-label">Business Model</div>
+    <h2 class="section-title reveal">Sustainable Revenue,<br>Multiplied Impact</h2>
+    <p class="section-sub reveal reveal-delay-1">A diversified model that ensures financial viability without compromising social mission.</p>
+
+    <div class="revenue-grid">
+      <div class="rev-card reveal reveal-delay-1">
+        <div class="rev-icon">🏢</div>
+        <h3>Corporate CSR Partnerships</h3>
+        <p>Premium packages for CSR management, employee volunteering, and project sponsorship with full compliance reporting and impact dashboards.</p>
+        <div class="rev-tag">Primary Revenue Stream</div>
+      </div>
+      <div class="rev-card reveal reveal-delay-2">
+        <div class="rev-icon">📈</div>
+        <h3>Premium NGO Tools</h3>
+        <p>Subscription-based advanced analytics, predictive resource planning, and grant application support for NGOs at affordable tiered pricing.</p>
+        <div class="rev-tag">Subscription Revenue</div>
+      </div>
+      <div class="rev-card reveal reveal-delay-3">
+        <div class="rev-icon">🔬</div>
+        <h3>Impact Analytics & Consulting</h3>
+        <p>Bespoke social impact assessments and strategic consulting for NGOs, government agencies, and corporations using SevaAI's rich dataset.</p>
+        <div class="rev-tag">Project-based Fees</div>
+      </div>
+      <div class="rev-card reveal reveal-delay-1">
+        <div class="rev-icon">🏛️</div>
+        <h3>Government Partnerships</h3>
+        <p>Licensing SevaAI's AI engine and platform modules for disaster management, public health, and social welfare programs at state and central levels.</p>
+        <div class="rev-tag">Licensing & Grants</div>
+      </div>
+      <div class="rev-card reveal reveal-delay-2">
+        <div class="rev-icon">📢</div>
+        <h3>Sponsored Campaigns</h3>
+        <p>NGOs and corporate partners can sponsor specific drives or feature their profiles for increased visibility, attracting more volunteers and donors.</p>
+        <div class="rev-tag">Campaign Fees</div>
+      </div>
+      <div class="rev-card reveal reveal-delay-3">
+        <div class="rev-icon">🌱</div>
+        <h3>Grant Funding</h3>
+        <p>Non-dilutive capital from philanthropic foundations and impact investors supporting research, development, and scaling of social impact features.</p>
+        <div class="rev-tag">Philanthropic Capital</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section class="roadmap" id="roadmap">
+    <div class="section-label">Implementation</div>
+    <h2 class="section-title reveal">The Path to<br>National Impact</h2>
+
+    <div class="roadmap-track">
+      <div class="roadmap-line"></div>
+      <div class="roadmap-steps">
+        <div class="roadmap-step reveal reveal-delay-1">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-phase">Months 1–3</div>
+          <h3>Foundation & MVP</h3>
+          <ul>
+            <li>Core platform launch</li>
+            <li>AI models for 3 need categories</li>
+            <li>Android MVP + Web platform</li>
+            <li>5-10 NGOs · 500 volunteers</li>
+            <li>2-city pilot launch</li>
+          </ul>
+        </div>
+        <div class="roadmap-step reveal reveal-delay-2">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-phase">Months 4–6</div>
+          <h3>Regional Growth</h3>
+          <ul>
+            <li>AI expanded to 7 categories</li>
+            <li>iOS MVP launch</li>
+            <li>5–7 additional cities</li>
+            <li>30 NGOs · 5,000 volunteers</li>
+            <li>First CSR partnerships</li>
+          </ul>
+        </div>
+        <div class="roadmap-step reveal reveal-delay-3">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-phase">Months 7–12</div>
+          <h3>Scaling & Impact Intelligence</h3>
+          <ul>
+            <li>Full Volunteer Routing Engine</li>
+            <li>KPI Dashboard launch</li>
+            <li>15–20 cities reached</li>
+            <li>100 NGOs · 50K volunteers</li>
+            <li>Government collaborations</li>
+          </ul>
+        </div>
+        <div class="roadmap-step reveal reveal-delay-4">
+          <div class="roadmap-dot"></div>
+          <div class="roadmap-phase">Year 2–5</div>
+          <h3>National Ecosystem Leadership</h3>
+          <ul>
+            <li>All-India rollout</li>
+            <li>Predictive disaster analytics</li>
+            <li>API for third-party integrations</li>
+            <li>SevaAI Labs R&D hub</li>
+            <li>International expansion</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="contact">
+    <div class="section-label" style="justify-content:center">Join the Movement</div>
+    <h2 class="section-title reveal">Help India, One<br><span style="color:var(--saffron)">Connection</span> at a Time</h2>
+    <p class="section-sub reveal reveal-delay-1">Whether you're a volunteer, NGO, corporation, or impact investor — SevaAI is your platform for real, measurable social change.</p>
+    <div class="cta-actions reveal reveal-delay-2">
+      <a href="mailto:prateek@sevaai.in" class="btn-primary">Get Involved →</a>
+      <a href="https://www.linkedin.com/in/prateek-maheshwari-7p/" target="_blank" class="btn-ghost">Investor Pitch Deck</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo">Seva<span>AI</span>™</a>
+        <p>India's Intelligent Social Impact Network — connecting people, NGOs, and urgent needs in real time through the power of AI and the spirit of Seva.</p>
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/prateek-maheshwari-7p/" target="_blank" class="social-link" title="LinkedIn">in</a>
+          <a href="https://github.com/Panda-224k" target="_blank" class="social-link" title="GitHub">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          </a>
+          <a href="mailto:prateek@sevaai.in" class="social-link" title="Email">✉</a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="#problems">The Problem</a></li>
+          <li><a href="#seva">S.E.V.A. Framework™</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#cases">Case Studies</a></li>
+          <li><a href="#users">User Types</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Organization</h4>
+        <ul>
+          <li><a href="#revenue">Revenue Model</a></li>
+          <li><a href="#roadmap">Roadmap</a></li>
+          <li><a href="#sdgs">SDG Alignment</a></li>
+          <li><a href="#contact">Investor Pitch</a></li>
+          <li><a href="#contact">Partner With Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="https://www.linkedin.com/in/prateek-maheshwari-7p/" target="_blank">LinkedIn</a></li>
+          <li><a href="https://github.com/Panda-224k" target="_blank">GitHub</a></li>
+          <li><a href="mailto:prateek@sevaai.in">Email Us</a></li>
+          <li><a href="#contact">Volunteer</a></li>
+          <li><a href="#contact">NGO Onboarding</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 SevaAI™ — Helping India, One Connection at a Time</p>
+      <p class="built-by">
+        Conceptualized & Built by <a href="https://www.linkedin.com/in/prateek-maheshwari-7p/" target="_blank">Prateek Maheshwari</a>
+        &nbsp;·&nbsp;
+        <a href="https://github.com/Panda-224k" target="_blank">GitHub</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // ─── SCROLL REVEAL ───
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => observer.observe(el));
+
+    // ─── TAB SWITCHING ───
+    function switchTab(id) {
+      document.querySelectorAll('.user-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + id).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    // ─── NAVBAR SCROLL ───
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 80) {
+        nav.style.background = 'rgba(10,22,40,0.97)';
+      } else {
+        nav.style.background = 'rgba(10,22,40,0.85)';
+      }
+    });
+
+    // ─── COUNTER ANIMATION ───
+    function animateCount(el, target, suffix) {
+      let start = 0;
+      const duration = 1800;
+      const step = (timestamp) => {
+        if (!start) start = timestamp;
+        const progress = Math.min((timestamp - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.floor(eased * target) + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const nums = entry.target.querySelectorAll('.stat-num');
+          const data = [
+            { target: 1, suffix: 'M+' },
+            { target: 5, suffix: 'M+' },
+            { target: 100, suffix: 'K+' },
+            { target: 25, suffix: 'L Cr' },
+          ];
+          nums.forEach((el, i) => {
+            if (data[i]) animateCount(el, data[i].target, data[i].suffix);
+          });
+          statsObserver.disconnect();
+        }
+      });
+    }, { threshold: 0.5 });
+
+    const statsStrip = document.querySelector('.stats-strip');
+    if (statsStrip) statsObserver.observe(statsStrip);
+  </script>
+</body>
+</html>
